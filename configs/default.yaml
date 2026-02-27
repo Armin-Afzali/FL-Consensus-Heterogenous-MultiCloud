@@ -1,0 +1,75 @@
+# Default experiment configuration
+# Modify these values to run different experiments
+
+seed: 42
+
+# Federation settings
+num_clients: 20
+clients_per_round: 10
+num_rounds: 50            # 50 rounds is sufficient for convergence comparison
+
+# Local training
+local_epochs: 3           # 3 epochs balances convergence vs speed
+local_lr: 0.01
+batch_size: 64            # larger batch = fewer steps per epoch
+
+# Data heterogeneity (Dirichlet alpha)
+# High values (100.0) = IID, Low values (0.1) = extreme non-IID
+dirichlet_alpha: 0.5
+
+# Dataset
+dataset: "cifar10"  # "cifar10" or "mnist"
+
+# Model
+model: "simplecnn"  # "simplecnn"
+
+# Aggregation method: "fedavg", "trimmed_mean", "krum", "twac"
+aggregator: "twac"
+
+# TWAC hyperparameters
+twac:
+  trust_momentum: 0.7       # gamma: trust EMA momentum
+  magnitude_sensitivity: 2.0 # alpha: norm outlier sensitivity
+  magnitude_tolerance: 2.0   # beta: multiples of median before penalty
+  reference_momentum: 0.9    # mu: reference direction EMA
+  trust_floor: 0.1           # tau_min: minimum trust score
+  straggler_decay: 0.98      # delta: trust decay for stragglers
+
+# Trimmed Mean parameters
+trimmed_mean:
+  trim_ratio: 0.2  # fraction to trim from each side
+
+# Krum parameters
+krum:
+  num_select: 5  # number of updates to select (multi-Krum)
+
+# Attack configuration
+attack:
+  type: "none"         # "none", "noise", "sign_flip", "scaling"
+  fraction: 0.0        # fraction of clients that are malicious
+  noise_std: 0.5       # std for Gaussian noise attack
+  flip_scale: 1.0      # scale for sign-flip attack
+  scaling_factor: 5.0  # factor for scaling attack
+
+# Network heterogeneity simulation
+network:
+  enabled: true
+  base_latency: 0.0        # base latency in seconds (for simulation logging)
+  latency_variance: 0.0    # variance in latency
+  drop_rate: 0.0           # probability of client dropping out
+  straggler_fraction: 0.0  # fraction of slow clients
+  straggler_slowdown: 3.0  # how much slower stragglers are
+  timeout_rounds: 1.5      # timeout = timeout_rounds * median expected time
+
+# Computational heterogeneity
+compute:
+  enabled: true
+  # Relative compute speeds (1.0 = normal, 0.3 = slow)
+  speed_distribution: "uniform"  # "uniform", "bimodal"
+  min_speed: 0.3
+  max_speed: 1.0
+
+# Logging
+log_interval: 5  # evaluate every N rounds (increase for faster runs)
+verbose: true
+save_trust_scores: true
