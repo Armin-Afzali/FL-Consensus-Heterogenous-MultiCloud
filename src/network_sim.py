@@ -1,6 +1,7 @@
 """
-Network heterogeneity simulation.
-Simulates variable latency, bandwidth constraints, and client drop-outs.
+Multi-cloud network heterogeneity simulation.
+Models the variable latency, bandwidth constraints, and drop-outs
+that occur in cross-region, cross-provider federated learning.
 """
 
 import numpy as np
@@ -9,13 +10,14 @@ from typing import List, Set, Dict
 
 class NetworkSimulator:
     """
-    Simulates network heterogeneity in federated learning.
+    Simulates multi-cloud network heterogeneity in federated learning.
 
-    Models:
-    - Variable latency per client
-    - Random client drop-outs
-    - Straggler clients (slow network + slow compute)
-    - Timeout-based exclusion
+    Models the communication challenges of cross-region, cross-provider
+    deployments:
+    - Variable inter-region latency per node
+    - Random node drop-outs (models WAN failures, provider outages)
+    - Straggler nodes (slow network + slow compute instances)
+    - Timeout-based exclusion (models real-world WAN timeout behavior)
     """
 
     def __init__(
@@ -103,3 +105,4 @@ class NetworkSimulator:
                 set(selected_ids) & self.straggler_ids
             ),
         }
+        

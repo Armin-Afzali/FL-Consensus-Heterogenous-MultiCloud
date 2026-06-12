@@ -1,6 +1,8 @@
 """
-Federated learning client implementation.
-Handles local training, attack simulation, and update computation.
+Federated learning cloud node implementation.
+Each node represents a cloud instance in a multi-cloud deployment,
+holding private regional data and performing local model training.
+Supports simulation of honest, noisy, and compromised node behavior.
 """
 
 import copy
@@ -14,9 +16,11 @@ from collections import OrderedDict
 
 class FLClient:
     """
-    Federated Learning client.
+    Federated Learning cloud node.
 
-    Performs local training and optionally applies attack behaviors.
+    Represents a cloud instance in a multi-cloud deployment.
+    Performs local training on private regional data and optionally
+    simulates faulty or adversarial node behavior (noise, sign-flip, scaling).
     """
 
     def __init__(

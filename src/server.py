@@ -1,7 +1,8 @@
 """
-Federated Learning Server.
-Orchestrates rounds: client selection, update collection,
-aggregation, and model update.
+Federated Learning Aggregation Server.
+Acts as the central hub in the multi-cloud deployment, orchestrating
+rounds: node selection, update collection across regions,
+trust-weighted aggregation, and global model update.
 """
 
 import copy

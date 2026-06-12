@@ -3,9 +3,9 @@
 
 seed: 42
 
-# Federation settings
-num_clients: 20
-clients_per_round: 10
+# Federation settings — models a multi-cloud deployment
+num_clients: 20             # number of cloud nodes across regions/providers
+clients_per_round: 10       # nodes selected per communication round
 num_rounds: 50            # 50 rounds is sufficient for convergence comparison
 
 # Local training
@@ -13,8 +13,8 @@ local_epochs: 3           # 3 epochs balances convergence vs speed
 local_lr: 0.01
 batch_size: 64            # larger batch = fewer steps per epoch
 
-# Data heterogeneity (Dirichlet alpha)
-# High values (100.0) = IID, Low values (0.1) = extreme non-IID
+# Data heterogeneity (Dirichlet alpha) — models regional data distribution differences
+# High values (100.0) = IID (all regions same), Low values (0.1) = extreme regional bias
 dirichlet_alpha: 0.5
 
 # Dataset
@@ -43,28 +43,28 @@ trimmed_mean:
 krum:
   num_select: 5  # number of updates to select (multi-Krum)
 
-# Attack configuration
+# Attack configuration — models compromised or faulty cloud nodes
 attack:
-  type: "none"         # "none", "noise", "sign_flip", "scaling"
-  fraction: 0.0        # fraction of clients that are malicious
-  noise_std: 0.5       # std for Gaussian noise attack
-  flip_scale: 1.0      # scale for sign-flip attack
-  scaling_factor: 5.0  # factor for scaling attack
+  type: "none"         # "none", "noise" (faulty), "sign_flip" (adversarial), "scaling"
+  fraction: 0.0        # fraction of nodes that are compromised
+  noise_std: 0.5       # std for Gaussian noise (models buggy training pipeline)
+  flip_scale: 1.0      # scale for sign-flip (models actively malicious node)
+  scaling_factor: 5.0  # factor for scaling (models node trying to dominate)
 
-# Network heterogeneity simulation
+# Network heterogeneity — models inter-region, cross-provider communication
 network:
   enabled: true
-  base_latency: 0.0        # base latency in seconds (for simulation logging)
-  latency_variance: 0.0    # variance in latency
-  drop_rate: 0.0           # probability of client dropping out
-  straggler_fraction: 0.0  # fraction of slow clients
+  base_latency: 0.0        # base inter-region latency (for simulation logging)
+  latency_variance: 0.0    # variance in latency (cross-continent vs intra-region)
+  drop_rate: 0.0           # probability of node becoming unreachable
+  straggler_fraction: 0.0  # fraction of slow nodes (weak instances or distant regions)
   straggler_slowdown: 3.0  # how much slower stragglers are
   timeout_rounds: 1.5      # timeout = timeout_rounds * median expected time
 
-# Computational heterogeneity
+# Computational heterogeneity — models different cloud instance types
 compute:
   enabled: true
-  # Relative compute speeds (1.0 = normal, 0.3 = slow)
+  # Relative compute speeds (1.0 = GPU instance, 0.3 = small CPU instance)
   speed_distribution: "uniform"  # "uniform", "bimodal"
   min_speed: 0.3
   max_speed: 1.0

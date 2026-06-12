@@ -2,7 +2,7 @@
 
 ## Trust-Weighted Adaptive Consensus (TWAC)
 
-A federated learning framework implementing a lightweight consensus mechanism that achieves robustness against Byzantine clients and stragglers with O(nd) computational cost — matching FedAvg while significantly outperforming it under adversarial conditions.
+A federated learning framework that simulates a **multi-cloud environment** where distributed cloud nodes across different regions and providers collaboratively train a shared model. Implements a lightweight consensus mechanism (TWAC) that achieves robustness against compromised nodes and stragglers with O(nd) computational cost — matching FedAvg while significantly outperforming it under adversarial conditions.
 
 ---
 
@@ -35,16 +35,16 @@ python experiments/plot_results.py
 
 ## Project Structure
 
-```bash
+```
 federated-learning/
 ├── configs/default.yaml          # Experiment configuration
 ├── src/
 │   ├── models.py                 # CNN model definitions
-│   ├── data.py                   # Non-IID data partitioning (Dirichlet)
-│   ├── client.py                 # Client training + attack simulation
-│   ├── server.py                 # Server orchestration
+│   ├── data.py                   # Non-IID data partitioning (Dirichlet) — simulates regional data
+│   ├── client.py                 # Cloud node training + attack/fault simulation
+│   ├── server.py                 # Aggregation server orchestration
 │   ├── aggregators.py            # FedAvg, TrimmedMean, Krum, TWAC
-│   ├── network_sim.py            # Network heterogeneity simulation
+│   ├── network_sim.py            # Multi-cloud network heterogeneity simulation
 │   └── utils.py                  # Logging and helpers
 ├── experiments/
 │   ├── run_experiment.py         # Main experiment runner
@@ -58,7 +58,6 @@ federated-learning/
 ## Running Experiments
 
 ### Single Method
-
 ```bash
 python experiments/run_experiment.py --aggregator twac
 python experiments/run_experiment.py --aggregator fedavg
@@ -66,7 +65,6 @@ python experiments/run_experiment.py --aggregator krum
 ```
 
 ### With Attacks
-
 ```bash
 # Sign-flip attack on 20% of clients
 python experiments/run_experiment.py --aggregator twac --attack sign_flip --attack_fraction 0.2
@@ -76,7 +74,6 @@ python experiments/run_experiment.py --aggregator fedavg --attack noise --attack
 ```
 
 ### Varying Heterogeneity
-
 ```bash
 # IID data
 python experiments/run_experiment.py --aggregator twac --alpha 100.0
@@ -86,13 +83,11 @@ python experiments/run_experiment.py --aggregator twac --alpha 0.1
 ```
 
 ### With Stragglers
-
 ```bash
 python experiments/run_experiment.py --aggregator twac --straggler_fraction 0.3
 ```
 
 ### Full Comparison
-
 ```bash
 python experiments/run_experiment.py --compare --rounds 100
 python experiments/run_experiment.py --compare --attack sign_flip --attack_fraction 0.2
@@ -101,23 +96,23 @@ python experiments/plot_results.py
 
 ## Method Overview
 
-**TWAC** maintains per-client trust scores updated each round based on:
+The system simulates a multi-cloud federated learning deployment where N cloud nodes (across different providers/regions) each hold private local data and collaboratively train a shared model by exchanging only model updates.
 
-1. **Directional Consistency**: Cosine similarity between client update and exponential moving average of past aggregated updates
-2. **Magnitude Reasonableness**: Penalizes updates with norms far from the median (catches scaling attacks)
+**TWAC** maintains per-node trust scores updated each round based on:
+
+1. **Directional Consistency**: Cosine similarity between a node's update and the exponential moving average of past aggregated updates
+2. **Magnitude Reasonableness**: Penalizes updates with norms far from the median (catches scaling attacks and faulty nodes)
 
 Trust scores are updated via EMA and used as aggregation weights. Key advantages:
-
 - **O(nd) complexity** — same as FedAvg, vs O(n²d) for Krum
-- **Temporal memory** — a single bad round doesn't destroy trust; persistent attackers get filtered out over a few rounds
-- **Graceful straggler handling** — timeout-based with mild trust decay
+- **Temporal memory** — transient cloud issues don't destroy trust; persistently compromised nodes get filtered out
+- **Graceful straggler handling** — timeout-based (models WAN unreliability between regions) with mild trust decay
 
 See `docs/BLUEPRINT.md` for complete mathematical formulation and algorithm pseudocode.
 
 ## Configuration
 
 Edit `configs/default.yaml` to customize:
-
 - Number of clients, rounds, local epochs
 - Dirichlet alpha for data heterogeneity
 - Attack type and fraction
@@ -129,4 +124,4 @@ Edit `configs/default.yaml` to customize:
 - Python 3.8+
 - PyTorch 2.0+
 - See `requirements.txt` for full list
--
+- 

@@ -1,6 +1,9 @@
 """
 Data loading and non-IID partitioning for federated learning.
-Uses Dirichlet distribution for controlling data heterogeneity.
+Uses Dirichlet distribution to simulate regional data heterogeneity —
+each cloud node receives a distinct, non-uniform data distribution
+modeling the real-world scenario where different regions/organizations
+collect data with different characteristics.
 """
 
 import numpy as np
