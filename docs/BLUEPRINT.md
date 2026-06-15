@@ -438,15 +438,3 @@ federated-learning/
 - **Our approach**: Attack-model-agnostic; the trust mechanism naturally adapts to whatever failure pattern emerges — whether that's a compromised node, a buggy training pipeline, or a misconfigured cloud instance
 
 ---
-
-## 12. Expected Results (Hypotheses)
-
-1. **Under no attack**: TWAC ≈ FedAvg (minimal overhead when all nodes are honest)
-2. **Under attacks**: TWAC > FedAvg, competitive with Krum/TrimmedMean (compromised nodes are effectively isolated)
-3. **Under stragglers**: TWAC > all baselines (graceful degradation via timeout + trust — models WAN unreliability between cloud regions)
-4. **Under non-IID**: TWAC handles regional data divergence better than naive FedAvg by down-weighting extreme outlier directions
-5. **Computation**: TWAC runs ~1.1x FedAvg wall-clock time vs ~2-3x for Krum (crucial for cost-sensitive multi-cloud deployments)
-
----
-
-*End of Blueprint*
