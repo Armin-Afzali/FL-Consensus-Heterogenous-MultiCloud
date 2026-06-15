@@ -1,6 +1,3 @@
-# Default experiment configuration
-# Modify these values to run different experiments
-
 seed: 42
 
 # Federation settings — models a multi-cloud deployment

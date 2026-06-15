@@ -402,46 +402,7 @@ federated-learning/
 
 ---
 
-## 9. Implementation Plan
-
-### Phase 1: Core Infrastructure (Days 1-3)
-
-- [ ] Set up project structure and dependencies
-- [ ] Implement CNN model
-- [ ] Implement Dirichlet-based non-IID data partitioning
-- [ ] Implement basic client training loop
-
-### Phase 2: Aggregation Methods (Days 4-6)
-
-- [ ] Implement FedAvg aggregator
-- [ ] Implement Trimmed Mean aggregator
-- [ ] Implement Krum aggregator
-- [ ] Implement TWAC aggregator with trust score tracking
-
-### Phase 3: Heterogeneity Simulation (Days 7-8)
-
-- [ ] Implement computational heterogeneity (variable training time)
-- [ ] Implement network heterogeneity (latency, bandwidth, drops)
-- [ ] Implement straggler handling with timeouts
-- [ ] Implement attack behaviors (noise, sign-flip, scaling)
-
-### Phase 4: Experiments (Days 9-11)
-
-- [ ] Run all baseline experiments
-- [ ] Run robustness experiments (varying attack fraction)
-- [ ] Run heterogeneity experiments (varying non-IID degree)
-- [ ] Run straggler experiments
-
-### Phase 5: Analysis & Documentation (Days 12-14)
-
-- [ ] Generate all plots and visualizations
-- [ ] Write results analysis
-- [ ] Complete documentation
-- [ ] Final testing and reproducibility check
-
----
-
-## 10. Hyperparameter Guide for TWAC
+## 9. Hyperparameter Guide for TWAC
 
 | Parameter | Symbol | Default | Range | Description |
 |-----------|--------|---------|-------|-------------|
@@ -454,7 +415,7 @@ federated-learning/
 
 ---
 
-## 11. Discussion of Novelty vs. Related Work
+## 10. Discussion of Novelty vs. Related Work
 
 ### vs. Fang et al. (Robust FL with Noisy/Heterogeneous Clients)
 
